@@ -185,7 +185,11 @@ def main():
     hwnd = find_window_handle(WINDOW_TITLE_HINT)
 
     print(f"\nPort : {PORT}")
-    print("Put your PC IP in Unity CameraFeedReceiver.")
+
+    # Broadcast this PC's IP + ports so Unity can auto-discover it
+    from shared_discovery import start_broadcaster
+    start_broadcaster("ultrasound", {"video": PORT, "control": 5001}, broadcast_port=5003)
+
     print("Make sure Quest 3 is on the same network.\n")
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
