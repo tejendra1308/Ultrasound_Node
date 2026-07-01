@@ -15,14 +15,11 @@ def get_local_ip():
         s.close()
 
 
+MULTICAST_GROUP = "239.255.42.42"  # fixed multicast address, same on all scripts
+
 def start_broadcaster(service_name, ports: dict, broadcast_port=5003, interval=2.0):
-    """
-    Broadcast this PC's IP + relevant ports under a named service.
-    ports: dict like {"video": 5000, "control": 5001}
-    """
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
 
     local_ip = get_local_ip()
     message = json.dumps({
@@ -34,12 +31,12 @@ def start_broadcaster(service_name, ports: dict, broadcast_port=5003, interval=2
     def loop():
         while True:
             try:
-                sock.sendto(message, ("255.255.255.255", broadcast_port))
+                sock.sendto(message, (MULTICAST_GROUP, broadcast_port))
             except Exception as e:
-                print(f"  [UDP] Broadcast error: {e}")
+                print(f"  [UDP] Multicast error: {e}")
             time.sleep(interval)
 
     thread = threading.Thread(target=loop, daemon=True)
     thread.start()
-    print(f"  [UDP] Broadcasting '{service_name}' on port {broadcast_port} at {local_ip} {ports}")
+    print(f"  [Multicast] Broadcasting '{service_name}' → {MULTICAST_GROUP}:{broadcast_port}")
     return thread
