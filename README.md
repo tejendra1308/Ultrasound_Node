@@ -20,8 +20,11 @@ py 3.12 -m venv ct_pipeline
 
 # STEP 2  run cmds
 ```bash run 
-pip3 install opencv-python numpy
-python feeder.py
+python feeder.py  
+```
+# if modules doesn't exist
+```bash
+pip3 install opencv-python numpy  # don't install if already did pip install -r requirements.txt in CT_Cloud, as it is already installed
 ```
 
 # STEP3 open cmd-prompt as administrator
