@@ -32,9 +32,13 @@ command_rx.py   entry point: commands.json -> CommandDispatcher -> InputBackend
 
 ## Setup
 
-```bash
+```bash virtual env if not created
 python -m venv ct_pipeline
+```
+```bash activate
 .\ct_pipeline\Scripts\Activate.ps1
+```
+```bash install
 pip install -r requirements.txt
 ```
 
