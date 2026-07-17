@@ -1,0 +1,17 @@
+{
+  "window": {
+    "title_hint": "Echo Wave II"
+  },
+  "video": {
+    "port": 5000,
+    "fps": 30,
+    "jpeg_quality": 90
+  },
+  "command": {
+    "port": 5001,
+    "input_backend": "dummy"
+  },
+  "discovery": {
+    "enabled": true
+  }
+}
